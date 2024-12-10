@@ -7,14 +7,14 @@ if (!isset($_SESSION['username'])) {
     exit();
 }
 
-// Obtener la contraseña del usuario actual desde la base de datos
+// Obtener la contraseña original desde la base de datos
 $username = $_SESSION['username'];
-$sql = "SELECT password FROM users WHERE username = :username";
+$sql = "SELECT password_plain FROM users WHERE username = :username";
 $stmt = $pdo->prepare($sql);
 $stmt->execute(['username' => $username]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-$passwordHash = $user['password'];
+$passwordPlain = $user['password_plain'];
 ?>
 
 <!DOCTYPE html>
@@ -30,8 +30,8 @@ $passwordHash = $user['password'];
         <h2>Bienvenido, <?php echo htmlspecialchars($_SESSION['username']); ?>!</h2><br>
         <p>Has iniciado sesión correctamente.</p><br>
         
-        <!-- Mostrar la contraseña (hash) del usuario -->
-        <p>Tu contraseña es: <strong><?php echo htmlspecialchars($passwordHash); ?></strong></p><br>
+        <!-- Mostrar la contraseña original del usuario -->
+        <p>Tu contraseña es: <strong><?php echo htmlspecialchars($passwordPlain); ?></strong></p><br>
         
         <a class="forgot-password" href="logout.php">Cerrar sesión</a>
     </div>

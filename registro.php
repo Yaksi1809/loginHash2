@@ -14,13 +14,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         try {
             // Preparar la consulta para insertar el usuario
-            $query = "INSERT INTO users (username, password) VALUES (:username, :password)";
+            $query = "INSERT INTO users (username, password, password_plain) VALUES (:username, :password, :password_plain)";
             $stmt = $pdo->prepare($query);
             
             // Ejecutar la consulta con los valores
             $stmt->execute([
                 ':username' => $username,
-                ':password' => $hashedPassword
+                ':password' => $hashedPassword,
+                ':password_plain' => $password // Guardar la contraseña sin cifrar
             ]);
 
             echo "<p>Usuario registrado exitosamente.</p>";
